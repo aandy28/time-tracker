@@ -1,0 +1,168 @@
+$blue: #2B81EA;
+$orange: #F2B622;
+$purple: #791DD1;
+$pink: #E54159;
+
+$colors: $blue, $orange, $purple, $pink;
+
+@for $i from 1 through length($colors) {
+	.item:nth-child(#{length($colors)}n+#{$i}) {
+    $color: nth($colors, $i);
+    
+		background: lighten($color, 0%);
+    color: lighten($color, 20%);
+    
+    .add-task
+    {
+      button
+      {
+        background-color: lighten($color, 0%);
+      }
+    }
+	}
+}
+
+@mixin n-columns($min-width, $gutter, $last-equal: false, $max-cols: 4) {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -$gutter;
+    margin-top: -$gutter;
+    .item {
+      flex: 1 0 $min-width;
+      // margin-left: $gutter;
+      // margin-top: $gutter;
+
+      @if $last-equal {
+        @for $i from 2 through $max-cols {
+          $screen-width: ($min-width*$i)+($gutter*$i);
+          $column-width: (100%/$i);
+          @media (min-width: $screen-width) {
+            max-width: calc(#{$column-width} - #{$gutter});
+          }
+        }
+    
+        $column-width: (100%/$max-cols);
+        @media (min-width: $min-width*$max-cols) {
+            min-width: calc(#{$column-width} - #{$gutter});
+        }
+      }
+    }
+  }
+}
+
+body
+{
+  color:#000000;
+  margin:0;
+  padding:0;
+  min-height: 100vh;
+  font-family:arial;
+  
+  .header
+  {
+    display:flex;
+    flex-flow: row wrap;
+    align-content: space-around;
+    min-height:50px;
+    padding:10px 0;
+
+    div
+    {
+      flex: 1;
+    }
+    
+    .logo
+    {
+      display: flex;
+      justify-content: flex-start;
+      align-self: center;
+    }
+
+    .start
+    {
+      text-align:center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      button
+      {
+        border-radius:40px;
+        min-width:250px;
+        @media (max-width: 767px) {
+          min-width:180px;
+        }
+        background:none;
+        border:3px solid #F2B622;
+        color:#000000;
+        line-height:50px;
+        text-transform:uppercase;
+      }
+    }
+
+    .date
+    {
+      display: flex;
+      justify-content: flex-end;
+      align-self: center;
+      padding-right:20px;
+      @media (max-width: 767px) {
+        padding:20px 0;
+        justify-content:center;
+      }
+    }
+  }
+
+@include n-columns(400px,  0px, true, 5);
+
+.container {
+  min-height: calc(100vh - 80px);
+  .item {
+    box-sizing: border-box;
+    padding: 10px;
+    position:relative;
+    
+    @media (max-width: 767px) {
+      min-height:calc(100vh - 136px);
+      max-width:100%;
+    }
+    
+    span
+    {
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index:1;
+      font-size:100px;
+    }
+    
+    .add-task
+    {
+      text-align:center;
+      position:absolute;
+      bottom:20px;
+      left:0;
+      width:100%;
+      z-index:2;
+      
+      button
+      {
+        border-radius:40px;
+        min-width:250px;
+        border:3px solid #ffffff;
+        color:#ffffff;
+        line-height:50px;
+      }
+    }
+  }
+}
+
+
+}
+
